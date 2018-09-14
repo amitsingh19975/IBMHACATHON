@@ -1,0 +1,20 @@
+{
+  "name": "ibm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitsingh19975/IBMHACATHON.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amitsingh19975/IBMHACATHON/issues"
+  },
+  "homepage": "https://github.com/amitsingh19975/IBMHACATHON#readme"
+}
