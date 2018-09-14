@@ -6,13 +6,16 @@ vm = new Vue({
     },
     methods: {
         initMap() {
+            const m = {
+                lat: 22.877000,
+                lng: 71.861800
+            }
             this.map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                },
-                zoom: 8
+                center: m,
+                zoom: 10
             });
+
+            let marker = new google.maps.Marker({position:m, map:this.map});
         },
         async mapElementCreate() {
             const google = document.querySelector("#google");

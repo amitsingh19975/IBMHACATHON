@@ -22,6 +22,10 @@ app.get('/getApiKey', function(req, res) {
   res.send(JSON.stringify({key : 'AIzaSyBzAaIGJ44drCpI0VYw0L4HOMc6UZIQXkY'}));
 });
 
+app.get('/chat',(req,res)=>{
+  res.render('chat.html');
+});
+
 app.listen(8000,()=>{
   console.log("http://localhost:8000");
 });
