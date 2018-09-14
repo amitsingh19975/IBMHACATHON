@@ -14,10 +14,17 @@ vm = new Vue({
                 zoom: 8
             });
         },
-        mapElementCreate() {
+        async mapElementCreate() {
             const google = document.querySelector("#google");
             const script = document.createElement('script');
-            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDArGV6xMnqpsLRY8rtL4tLN7EfQqzM6UU&callback=vm.initMap";
+            let key ='';
+            fetch("/getApiKey")
+                .then(res=> res.json())
+                .then(res=>{
+                    key = res.key;
+                })
+                .catch(err=>console.log(err));
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=vm.initMap`;
             script.async = true;
             script.defer = true;
             google.appendChild(script);
