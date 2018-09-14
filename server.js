@@ -10,16 +10,13 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  run.run('python script.py', function(data) {
-    console.log(">OUTPUT:");
-    console.log(data);
-  })
+  // 
 });
 
 // TODO: 
 app.get('/getApiKey', function(req, res) {
   var key = {
-    
+    key: ''
   };
 
   res.setHeader('Content-Type', 'application/json');
@@ -30,3 +27,9 @@ app.listen(8000,()=>{
   console.log("http://localhost:8000");
 });
 
+
+// HOW TO EXECUTE TERMINAL COMMANDS
+// run.run('command', function(data) {
+//     console.log(">OUTPUT:");
+//     console.log(data);
+//   });
