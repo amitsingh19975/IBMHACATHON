@@ -15,7 +15,12 @@ app.get('/', function(req, res) {
 
 // TODO: 
 app.get('/getApiKey', function(req, res) {
-
+  var key = {
+    
+  };
+  
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(key));
 });
 
 app.listen(8000);
