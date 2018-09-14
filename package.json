@@ -1,0 +1,26 @@
+{
+  "name": "ibmhacathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitsingh19975/IBMHACATHON.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amitsingh19975/IBMHACATHON/issues"
+  },
+  "homepage": "https://github.com/amitsingh19975/IBMHACATHON#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "node-cmd": "^3.0.0",
+    "nodemon": "^1.18.4",
+    "path": "^0.12.7"
+  }
+}
