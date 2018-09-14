@@ -9,12 +9,19 @@ module.exports = {
   bar: function () {
     // whatever
   },
-  run: function() {
+  test: function() {
     cmd.get(
-      'pwd',
+      'python script.py',
       function(err, data, stderr) {
-        console.log('the current working dir is : ',data)
+        console.log('the current working dir is : ',data);
       }
     )
+  },
+
+  run: function(command, callback) {
+    cmd.get(command, function(err, data, stderr) {
+      if(stderr) console.log(stderr);
+      callback(data);
+    });
   }
 };

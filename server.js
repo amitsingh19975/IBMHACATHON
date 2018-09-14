@@ -10,7 +10,10 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  run.foo('TEST');
+  run.run('python script.py', function(data) {
+    console.log(">OUTPUT:");
+    console.log(data);
+  })
 });
 
 // TODO: 
@@ -18,7 +21,7 @@ app.get('/getApiKey', function(req, res) {
   var key = {
     
   };
-  
+
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(key));
 });
