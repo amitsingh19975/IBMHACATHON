@@ -3,7 +3,6 @@ vm = new Vue({
     data: {
         name: "asdf",
         map: "",
-        google: "<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBzAaIGJ44drCpI0VYw0L4HOMc6UZIQXkY&callback=initMap\"async defer></script>",
     },
     methods: {
         initMap() {
