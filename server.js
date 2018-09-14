@@ -23,5 +23,7 @@ app.get('/getApiKey', function(req, res) {
   res.send(JSON.stringify(key));
 });
 
-app.listen(8000);
+app.listen(8000,()=>{
+  console.log("http://localhost:8000");
+});
 
