@@ -1,18 +1,10 @@
 {
-<<<<<<< HEAD
-  "name": "ibm",
-=======
   "name": "ibmhacathon",
->>>>>>> 18396ac72581b933139c12d066063177cb6f5706
   "version": "1.0.0",
   "description": "",
   "main": "run.js",
   "scripts": {
-<<<<<<< HEAD
-    "dev": "nodemon server.js",
-=======
     "test": "echo \"Error: no test specified\" && exit 1",
->>>>>>> 18396ac72581b933139c12d066063177cb6f5706
     "start": "node server.js"
   },
   "repository": {
@@ -24,9 +16,6 @@
   "bugs": {
     "url": "https://github.com/amitsingh19975/IBMHACATHON/issues"
   },
-<<<<<<< HEAD
-  "homepage": "https://github.com/amitsingh19975/IBMHACATHON#readme"
-=======
   "homepage": "https://github.com/amitsingh19975/IBMHACATHON#readme",
   "dependencies": {
     "ejs": "^2.6.1",
@@ -35,5 +24,4 @@
     "nodemon": "^1.18.4",
     "path": "^0.12.7"
   }
->>>>>>> 18396ac72581b933139c12d066063177cb6f5706
 }
