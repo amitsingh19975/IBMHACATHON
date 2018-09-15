@@ -36,7 +36,7 @@ new Vue({
                 message.me = false;
             }
             this.messages.push(message);
-            setTimeout(this.scrollBottom,5);
+            setTimeout(this.scrollBottom,2);
         },
     },watch:{
         formHide(){
