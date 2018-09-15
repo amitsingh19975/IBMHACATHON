@@ -19,9 +19,11 @@ new Vue({
         }
     },watch:{
         formHide(){
-            if(this.formHide){
-                this.scrollBottom();
-            }
+            this.$nextTick(()=>{
+                if(this.formHide){
+                    this.scrollBottom();
+                }
+            });
         }
     }
 });
