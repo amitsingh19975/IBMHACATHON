@@ -10,7 +10,9 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  // 
+  run.run('static/python/ocr/ocr.py', function(data) {
+    console.log(data);
+  })
 });
 
 // TODO: 
