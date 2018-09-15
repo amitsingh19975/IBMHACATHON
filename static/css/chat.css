@@ -1,6 +1,8 @@
 :root{
-    --left-color : rgb(66, 185, 206);
-    --white-color: white;
+    --left-color :  rgb(66, 185, 206);
+    --white-color:  white;
+    --color-me :    #5a5353;
+    --color-other:  rgb(79, 139, 179);
 }
 *{
     margin: 0;
@@ -168,9 +170,8 @@ form{
     overflow: hidden;
     overflow-y: scroll; 
     width: 100%;
+    grid-template-rows: repeat(1, 1fr);
     display: grid;
-    grid-template-columns: repeat();
-    grid-gap: 0rem;
     align-items: end;
     padding: 0 3rem 4rem 3rem; 
 }
@@ -221,22 +222,79 @@ form{
 }
 
 .chat-left, .chat-right{
+    display: flex;
+    align-items: center;
     font-size: 2.5rem;
     font-weight: 100;
-    max-width: 60%;
+    hyphens:auto;
+    position: relative;
+    overflow-wrap: break-word;
     word-wrap: break-word;
     margin-bottom: 3rem;
-    background-color: aqua;
     padding: 1rem 3rem 1rem 3rem;
+    -webkit-hyphens:auto;
+    -moz-hyphens:auto;
+    -ms-hyphens:auto;
 }
 
 .chat-left{
     justify-self: start;
-    
+    background-color: var(--color-me);
 }
 
 .chat-right{
     justify-self: end;
+    text-align: end;
+    background-color: var(--color-other);
+}
+
+.chat-name{
+    color: white;
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    font-size: 1.2rem;
+    width: 10rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-icon{
+    height: 4rem;
+    background-color: antiquewhite;
+    width: 4rem;
+    margin-right: 1rem;
+    margin-left: -1rem;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+}
+
+.chat-text{
+    font-size: 1.8rem;
+    color: white;
 
 }
 
+.left-arrow-down{
+    position: absolute;    
+    width: 0; 
+    height: 0;
+    bottom: -0.8rem;
+    left: 0;
+    border-right: 10px solid transparent;
+    border-top: 10px solid var(--color-me);
+}
+
+.right-arrow-down{
+    position: absolute;    
+    width: 0; 
+    height: 0;
+    bottom: -0.8rem;
+    right: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px solid var(--color-other);
+}

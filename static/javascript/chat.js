@@ -2,6 +2,8 @@ new Vue({
     el:"#app",
     data:{
         formHide: false,
+        messages:[],
+        currentUser:'',
     },
     methods:{
         login(type = false){
@@ -16,7 +18,11 @@ new Vue({
         scrollBottom(){
             const chat = document.querySelector("#chat-system");
             chat.scrollTop = chat.scrollHeight;
-        }
+        },
+        async readMessages(){
+            messages = {};
+
+        },
     },watch:{
         formHide(){
             this.$nextTick(()=>{
