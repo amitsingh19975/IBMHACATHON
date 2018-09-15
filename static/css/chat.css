@@ -181,6 +181,7 @@ form{
     bottom: 1rem;
     height: 4rem;
     left: 50%;
+    z-index: 10;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -235,6 +236,9 @@ form{
     -webkit-hyphens:auto;
     -moz-hyphens:auto;
     -ms-hyphens:auto;
+}
+.chat{
+    display: grid;
 }
 
 .chat-left{

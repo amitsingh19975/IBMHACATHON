@@ -35,21 +35,23 @@
             </form>
 
             <div id="chat-system" v-if="!formHide" ref="chatSystem">
-                <span class="chat-input">
-                    <input type="text" placeholder="message">
-                    <img src="/static/images/send.svg" alt="send">
-                </span>
+                <form @submit.prevent="readMessages" class="chat-input">
+                    <input type="text" placeholder="message" v-model="message">
+                    <img src="/static/images/send.svg" alt="send" @click="readMessages">
+                </form>
 
-                <div class="chat-left">
-                    <div class="chat-text">hi</div>
-                    <div class="left-arrow-down"></div>
-                </div>
-                <div class="chat-right">
-                    <div class="chat-name">amit</div>
-                    <div class="chat-icon"></div>
-                    <div class="chat-text">...</div>
-                    <div class="right-arrow-down"></div>
-                </div>
+                <span class="chat" v-for="m in messages">
+                    <div class="chat-left" v-if="m.me">
+                        <div class="chat-text">{{m.mess}}</div>
+                        <div class="left-arrow-down"></div>
+                    </div>
+                    <div class="chat-right" v-if="!m.me">
+                        <div class="chat-name">{{m.user}}</div>
+                        <div class="chat-icon"></div>
+                        <div class="chat-text">{{m.mess}}</div>
+                        <div class="right-arrow-down"></div>
+                    </div>
+                </span>
 
             </div>
 
