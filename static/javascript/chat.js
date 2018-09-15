@@ -35,6 +35,9 @@ new Vue({
             }else{
                 message.me = false;
             }
+
+            message.date = new Date();
+
             this.messages.push(message);
             setTimeout(this.scrollBottom,2);
         },
