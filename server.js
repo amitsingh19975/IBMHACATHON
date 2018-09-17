@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
-const run = require('./run.js')
+const cmd = require('./run.js')
 const app = express();
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
@@ -10,9 +10,9 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  run.run('static/python/ocr/ocr.py', function(data) {
+  cmd.run('static/python/ocr/ocr.py', function(data) {
     console.log(data);
-  })
+  });
 });
 
 // TODO: 
