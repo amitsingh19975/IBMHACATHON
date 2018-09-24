@@ -4,6 +4,8 @@ const ejs = require('ejs');
 const cmd = require('./run.js');
 const mailer = require('./mailer.js');
 const app = express();
+const PORT = process.env.PORT||8000;
+const IP = process.env.IP||'127.0.0.1';
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
@@ -31,8 +33,8 @@ app.get('/chat',(req,res)=>{
   
 });
 
-app.listen(8000,()=>{
-  console.log("http://localhost:8000");
+app.listen(PORT,IP,()=>{
+  console.log(`${IP}:${PORT}`);
 });
 
 
