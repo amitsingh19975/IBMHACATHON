@@ -7,8 +7,6 @@ req.headers({
   "authorization": "FLxBfjzcZQSG9Xy64UWqAhP0Nml2rdMEigowb7DaHICeukYvsKyJ5rVso8cN3mjIXKBSpQkDLntlFAwa"
 });
 
-
-
 module.exports = {
   run: function(command, callback) {
     cmd.get(command, function(err, data, stderr) {

@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
-const cmd = require('./run.js')
+const cmd = require('./run.js');
+const mailer = require('./mailer.js');
 const app = express();
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
@@ -10,8 +11,12 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  cmd.run('static/python/ocr/ocr.py', function(data) {
-    console.log(data);
+  // mailer.mail();
+  // cmd.run('curl -o weatherdata.json -k https://ef5128a4-86b4-47b8-b14f-a0cd74abf0ef:MwN42ReQZ9@twcservice.mybluemix.net:443/api/weather/v1/geocode/9.596478/76.522653/forecast/daily/3day.json', function(data) {
+  //   console.log(data);
+  // });
+  cmd.run('curl -o data.json -k https://ef5128a4-86b4-47b8-b14f-a0cd74abf0ef:MwN42ReQZ9@twcservice.mybluemix.net:443/api/weather/v1/geocode/9.596478/76.522653/forecast/daily/3day.json', function(data) {
+    console.log('completed');  
   });
 });
 
@@ -23,6 +28,7 @@ app.get('/getApiKey', function(req, res) {
 
 app.get('/chat',(req,res)=>{
   res.render('chat.html');
+  
 });
 
 app.listen(8000,()=>{
