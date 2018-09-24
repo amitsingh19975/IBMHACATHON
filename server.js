@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const cmd = require('./run.js')
 const app = express();
 const PORT = process.env.PORT||8000;
-const IP = process.env.IP||'127.0.0.1';
+const IP = process.env.IP||'http://127.0.0.1';
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
@@ -12,9 +12,9 @@ app.engine('html', ejs.renderFile);
 
 app.get('/', function(req, res) {
   res.render('index.html');
-  cmd.run('static/python/ocr/ocr.py', function(data) {
-    console.log(data);
-  });
+  // cmd.run('./static/python/ocr/ocr.py', function(data) {
+  //   console.log(data);
+  // });
 });
 
 // TODO: 
