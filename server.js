@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const cmd = require('./run.js')
 const app = express();
 const PORT = process.env.PORT||8000;
-const IP = process.env.IP||'http://127.0.0.1';
+const IP = process.env.IP;
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
@@ -27,8 +27,12 @@ app.get('/chat',(req,res)=>{
   res.render('chat.html');
 });
 
-app.listen(PORT,IP,()=>{
-  console.log(`${IP}:${PORT}`);
+// app.listen(PORT,IP,()=>{
+//   console.log(`${IP}:${PORT}`);
+// });
+
+app.listen(8000, () => {
+  console.log(`Server started on port http://localhost:8000`);
 });
 
 

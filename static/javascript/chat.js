@@ -1,7 +1,7 @@
 new Vue({
     el:"#app",
     data:{
-        formHide: false,
+        formHide: true,
         messages:[],
         currentUser:'amit',
         item:'',
