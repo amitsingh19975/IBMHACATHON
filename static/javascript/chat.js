@@ -7,7 +7,6 @@ let vm = new Vue({
         items: [],
         item: '',
     },
-<<<<<<< HEAD
     methods:{
         login(type = false){
             if(!type){
@@ -17,12 +16,6 @@ let vm = new Vue({
             }
 
             this.formHide = true;
-=======
-    methods: {
-        login() {},
-        readInventory() {
-
->>>>>>> 41035002d4469054bb5d726f712c0f3500a9b799
         },
         parseInput() {
             let obj = {};
@@ -46,7 +39,8 @@ let vm = new Vue({
         },
         uploadInventory(){
             const param = {
-
+                'user_id': '',
+                'items': this.items
             }
         }
     },
