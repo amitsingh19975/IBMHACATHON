@@ -43,23 +43,16 @@
                 <h2 v-if="formHide">INVENTORY</h2>
             </div>
             <div class="inventory-box" v-if="formHide">
-                <form @submit.prevent class="item-input">
+                <form @submit.prevent="parseInput" class="item-input">
                     <input type="text" placeholder="Item" v-model="item">
-                    <img src="/static/images/plus.svg" alt="add">
+                    <img src="/static/images/up-arrow.svg" alt="add" @click="parseInput">
                 </form>
-                <div class="inventory-item">
-                    <div class="delete-btn">
-                        <object data="/static/images/error.svg" type="image/svg+xml"></object> 
+                <div class="inventory-item" v-for="(i,k) in items">
+                    <div class="delete-btn" @click="deleteItem(k)">
+                        <img src="/static/images/error.svg">
                     </div>
-                    <h2>Gun</h2>
-                    <input type="number" min="0" max="100000">
-                </div>
-                <div class="inventory-item">
-                    <div class="delete-btn">
-                        <object data="/static/images/error.svg" type="image/svg+xml"></object> 
-                    </div>
-                    <h2>Gun</h2>
-                    <input type="number" min="0" max="100000">
+                    <h2>{{i.name}}</h2>
+                    <input type="number" min="0" max="100000" v-model="i.amount">
                 </div>
                 
             </div>

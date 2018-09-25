@@ -4,7 +4,7 @@
  viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
 	<style type="text/css">
 		.st0 {
-			fill: none;
+			fill: #e05a5a;
 			stroke: #BFBBBC;
 			stroke-width: 10;
 			stroke-miterlimit: 10;
@@ -13,14 +13,6 @@
 		.st1 {
 			fill: #FFFFFF;
 		}
-
-		.btn {
-			fill: #db3939 !important;
-		}
-		#circle{
-			pointer-events: all;
-			cursor: pointer;
-		}
 	</style>
 	<g id="circle">
 		<circle class="st0" id="circle-fill" cx="256" cy="256" r="250" />
@@ -28,14 +20,4 @@
 		l80.4,80.4l-80.4,80.4c-3.7,3.7-3.7,9.9,0,13.7c1.9,1.9,4.3,2.9,6.9,2.9c2.5,0,4.9-1,6.9-2.9l80.4-80.4l80.4,80.4
 		c1.9,1.9,4.3,2.9,6.9,2.9c2.5,0,4.9-1,6.9-2.9c3.7-3.7,3.7-9.9,0-13.7L268.7,253l80.4-80.4C352.9,168.9,352.9,162.8,349.1,159z" />
 	</g>
-	<script>
-		let circle = document.getElementById('circle');
-		circle.addEventListener('mouseenter',()=>{
-			document.getElementById('circle-fill').classList.add('btn');
-		});
-		circle.addEventListener('mouseleave',()=>{
-			document.getElementById('circle-fill').classList.remove('btn');
-		});
-
-	</script>
 </svg>

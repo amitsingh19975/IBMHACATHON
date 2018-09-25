@@ -313,7 +313,7 @@ input:focus {
     box-shadow: 0 1px 1px #bbbbbb;
     font-size: 3.6rem;
     background-color: rgb(255, 255, 255);
-    padding: 1rem 3rem 1rem 3rem;
+    padding: 1rem 3rem 1rem 2rem;
     /*color: rgb(53, 204, 78);
     */
     color: rgb(181, 182, 181);
@@ -324,10 +324,12 @@ input:focus {
     align-content: center;
     opacity: 1;
 }
-.remove{
+
+.remove {
     animation: removeItem 1s ease-out infinite;
     -webkit-animation: removeItem 1s ease-out infinite;
 }
+
 .inventory-item:nth-child(1) {
     border-top: 1px solid var(--inventory-border);
 }
@@ -347,7 +349,15 @@ input:focus {
 
 .delete-btn {
     width: 2.3rem;
+    margin-top: 0.3rem;
     justify-self: start;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+object {
+    width: 100%;
+    pointer-events: none;
 }
 
 @keyframes removeItem {
