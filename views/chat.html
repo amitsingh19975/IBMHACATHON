@@ -11,14 +11,19 @@
 </head>
 
 <body>
-    <span id="app">
+    <div id="app">
         <header class="nav">
             <ul>
-                <li class="nav-Logo">Icon</li>
-                <li class="nav-chat">Chat</li>
+                <li class="nav-logo">
+                    <img src="/static/images/Logo.png">
+                </li>
+                <li class="nav-chat">
+                    <img src="/static/images/chat.svg">
+                    <h3>CHAT</h3>
+                </li>
             </ul>
         </header>
-        <section :class="{'container' : true, 'clip':formHide}">
+        <section class="container">
             <form @submit.prevent v-if="!formHide">
                 <span id="input-email">
                     <img src="/static/images/login.svg" alt="login">
@@ -27,37 +32,41 @@
                 </span>
                 <span class="btn-collection">
                     <span class="btn btn-green" @click="login">Login</span>
-                    <span class="btn" @click="login(true)">
-                        <img src="/static/images/google-icon.svg" alt="google" id="google-icon">
-                        <span>Google</span>
+                    <span class="btn" @click="formHide = true">
+                        <img src="/static/images/storage.svg" alt="inventory" id="inventory-icon">
+                        <span>Inventory</span>
                     </span>
                 </span>
             </form>
 
-            <div id="chat-system" v-if="formHide" ref="chatSystem">
-                <form @submit.prevent="readMessages" class="chat-input">
-                    <input type="text" placeholder="message" v-model="message">
-                    <img src="/static/images/send.svg" alt="send" @click="readMessages">
+            <div :class="{'inventory-back':true, 'clip':formHide}">
+                <h2 v-if="formHide">INVENTORY</h2>
+            </div>
+            <div class="inventory-box" v-if="formHide">
+                <form @submit.prevent class="item-input">
+                    <input type="text" placeholder="Item" v-model="item">
+                    <img src="/static/images/plus.svg" alt="add">
                 </form>
-
-                <span class="chat" v-for="m in messages">
-                    <div class="chat-left" v-if="m.me">
-                        <div class="chat-text">{{m.mess}}</div>
-                        <div class="left-arrow-down"></div>
+                <div class="inventory-item">
+                    <div class="delete-btn">
+                        <object data="/static/images/error.svg" type="image/svg+xml"></object> 
                     </div>
-                    <div class="chat-right" v-if="!m.me">
-                        <div class="chat-name">{{m.user}}</div>
-                        <div class="chat-icon"></div>
-                        <div class="chat-text">{{m.mess}}</div>
-                        <div class="right-arrow-down"></div>
+                    <h2>Gun</h2>
+                    <input type="number" min="0" max="100000">
+                </div>
+                <div class="inventory-item">
+                    <div class="delete-btn">
+                        <object data="/static/images/error.svg" type="image/svg+xml"></object> 
                     </div>
-                </span>
-
+                    <h2>Gun</h2>
+                    <input type="number" min="0" max="100000">
+                </div>
+                
             </div>
 
         </section>
-    </span>
-    <script src="/static/javascript/chat.js"></script>
+        </span>
+        <script src="/static/javascript/chat.js"></script>
 </body>
 
 </html>

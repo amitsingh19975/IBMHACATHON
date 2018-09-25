@@ -5,6 +5,7 @@
     text-decoration: none;
     list-style: none;
     box-sizing: border-box;
+    font-family: sans-serif;
 }
 
 .container {
@@ -28,6 +29,7 @@
     margin: 0rem 2rem 0rem 2rem;
     padding: 1rem 0 1rem 0;
     justify-content: space-between;
+    align-items: center;
 }
 
 #map {
@@ -39,4 +41,36 @@
     flex: 1 1 30%;
     height: 100%;
     background-color: rgb(24, 53, 43);
+}
+
+.nav-logo, .nav-chat{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.nav-logo img{
+    width: 15rem;
+}
+
+.nav-chat img{
+    width: 4rem;
+}
+
+.tag{
+    color: white;
+    font-weight: 100;
+    padding: 0.3rem 2rem 0.3rem 2rem;
+    right: 5rem;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.692);
+}
+
+.tag::after{
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    left: 3rem;
+    
 }

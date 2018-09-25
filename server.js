@@ -33,8 +33,17 @@ app.get('/chat',(req,res)=>{
   
 });
 
+<<<<<<< HEAD
 app.get('/request_inventory', function(req, res) {
   res.send('Please send your current inventories. Use command: /send_inventory to send your current inventory');
+=======
+// app.listen(PORT,IP,()=>{
+//   console.log(`${IP}:${PORT}`);
+// });
+
+app.listen(8000, () => {
+  console.log(`Server started on port http://localhost:8000`);
+>>>>>>> 1909fc95ae3eed5139329d1b4d31f2c9997a16a9
 });
 
 // app.listen(PORT,IP,()=>{
