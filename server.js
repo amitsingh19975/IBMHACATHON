@@ -5,7 +5,7 @@ const cmd = require('./run.js');
 const mailer = require('./mailer.js');
 const app = express();
 const PORT = process.env.PORT||8000;
-const IP = process.env.IP||'127.0.0.1';
+const IP = process.env.IP;
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
@@ -33,10 +33,17 @@ app.get('/chat',(req,res)=>{
   
 });
 
-app.listen(PORT,IP,()=>{
-  console.log(`${IP}:${PORT}`);
+app.get('/request_inventory', function(req, res) {
+  res.send('Please send your current inventories. Use command: /send_inventory to send your current inventory');
 });
 
+// app.listen(PORT,IP,()=>{
+//   console.log(`${IP}:${PORT}`);
+// });
+
+app.listen(PORT, function() {
+  console.log(`http://localhost:${PORT}`);
+});
 
 // HOW TO EXECUTE TERMINAL COMMANDS
 // run.run('command', function(data) {
