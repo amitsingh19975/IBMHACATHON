@@ -1,11 +1,13 @@
-new Vue({
-    el:"#app",
-    data:{
-        formHide: false,
-        messages:[],
-        currentUser:'amit',
-        message:'',
+let vm = new Vue({
+    el: "#app",
+    data: {
+        formHide: true,
+        messages: [],
+        currentUser: 'amit',
+        items: [],
+        item: '',
     },
+<<<<<<< HEAD
     methods:{
         login(type = false){
             if(!type){
@@ -15,39 +17,39 @@ new Vue({
             }
 
             this.formHide = true;
-        },
-        scrollBottom(){
-            const chat = document.querySelector("#chat-system");
-            chat.scrollTop = chat.scrollHeight;
-        },
-        readMessages(){
-            if(this.messages.length > 1000){
-                let per = Math.floor(this.messages.length*80/100);
-                this.messages.splice(0,per);
-            }
-            message = {};
-            users = ['amit','ayush','shikar'];
-            message.user = users[Math.floor(Math.random() * 3)];
-            message.mess = this.message;
-            this.message = '';
-            if(this.currentUser === message.user){
-                message.me = true;
-            }else{
-                message.me = false;
-            }
+=======
+    methods: {
+        login() {},
+        readInventory() {
 
-            message.date = new Date();
-
-            this.messages.push(message);
-            setTimeout(this.scrollBottom,2);
+>>>>>>> 41035002d4469054bb5d726f712c0f3500a9b799
         },
-    },watch:{
-        formHide(){
-            this.$nextTick(()=>{
-                if(this.formHide){
-                    this.scrollBottom();
-                }
+        parseInput() {
+            let obj = {};
+            let text = this.item;
+            let textArray = text.split(':');
+            textArray.forEach(element => {
+                element.trim();
             });
+            if (textArray.length == 1 || typeof (textArray[1]) !== 'string' || textArray[1] === '') {
+                obj.name = textArray[0];
+                obj.amount = 0;
+            } else {
+                obj.name = textArray[0];
+                obj.amount = textArray[1];
+            }
+            this.items.push(obj);
+            this.item = '';
         },
+        deleteItem(index) {
+            this.items.splice(index, 1);
+        },
+        uploadInventory(){
+            const param = {
+
+            }
+        }
+    },
+    watch: {
     }
 });
