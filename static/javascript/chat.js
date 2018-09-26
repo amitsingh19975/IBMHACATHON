@@ -68,7 +68,7 @@ let vm = new Vue({
                     console.log(e);
                 });
         },
-        validate() {
+        async validate() {
             if (this.user_id !== '') {
                 this.formHide = true;
             }
@@ -84,7 +84,7 @@ let vm = new Vue({
             fetch('/fetch_inventory', param)
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res);
+                    
                 })
                 .catch((e) => {
                     console.log(e);
