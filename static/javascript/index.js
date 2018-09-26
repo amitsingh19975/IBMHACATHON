@@ -3,6 +3,7 @@ vm = new Vue({
     data: {
         name: "asdf",
         map: "",
+        cover:false,
     },
     methods: {
         initMap() {

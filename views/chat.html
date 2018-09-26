@@ -15,24 +15,25 @@
         <header class="nav">
             <ul>
                 <li class="nav-logo">
-                    <img src="/static/images/Logo.png">
+                    <img src="/static/images/Logo.png" @click="window.location.href='/'">
                 </li>
-                <li class="nav-chat">
+                <li class="nav-chat" @click="window.location.href='/chat'">
                     <img src="/static/images/chat.svg">
                     <h3>CHAT</h3>
                 </li>
             </ul>
+            <div></div>
         </header>
         <section class="container">
             <form @submit.prevent v-if="!formHide">
                 <span id="input-email">
                     <img src="/static/images/login.svg" alt="login">
-                    <input type="email" name="email" id="email" placeholder="Email">
-                    <label for="email">Email</label>
+                    <input type="text" name="text" id="user-id" required placeholder="Enter Slack User-ID" v-model="user_id">
+                    <label for="email">Slack User-Id</label>
                 </span>
                 <span class="btn-collection">
                     <span class="btn btn-green" @click="login">Login</span>
-                    <span class="btn" @click="formHide = true">
+                    <span class="btn" @click="validate">
                         <img src="/static/images/storage.svg" alt="inventory" id="inventory-icon">
                         <span>Inventory</span>
                     </span>
@@ -47,14 +48,13 @@
                     <input type="text" placeholder="Item" v-model="item">
                     <img src="/static/images/up-arrow.svg" alt="add" @click="uploadInventory">
                 </form>
-                <div class="inventory-item" v-for="(i,k) in items">
+                <div :class="{'inventory-item':true, 'remove':!i.show}" v-for="(i,k) in items">
                     <div class="delete-btn" @click="deleteItem(k)">
-                        <img src="/static/images/error.svg">
                     </div>
                     <h2>{{i.name}}</h2>
                     <input type="number" min="0" max="100000" v-model="i.amount">
                 </div>
-                
+
             </div>
 
         </section>

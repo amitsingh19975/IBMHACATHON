@@ -83,6 +83,7 @@
 
 .nav-logo img {
     height: 3rem;
+    cursor: pointer;
 }
 
 .nav-chat {
@@ -145,7 +146,7 @@ form {
     -o-transform: translate(-50px, -50px) scale(0.9);
 }
 
-#email {
+#user-id {
     font-size: 2rem;
     font-weight: 100;
     border: none;
@@ -158,7 +159,7 @@ form {
     -o-border-radius: 5px;
 }
 
-#email:placeholder-shown+label {
+#user-id:placeholder-shown+label {
     visibility: hidden;
     opacity: 0;
     transform: translateY(0px);
@@ -279,7 +280,7 @@ form {
     top: 0.1rem;
     right: 0.15rem;
     transition: transform 0.2s ease-in;
-    -webkit-transition: transform 0.2s ease-in;
+    -webkit-transition: transform 0.2s ease-in-out;
     -moz-transition: transform 0.2s ease-in;
     -ms-transition: transform 0.2s ease-in;
     -o-transition: transform 0.2s ease-in;
@@ -326,8 +327,8 @@ input:focus {
 }
 
 .remove {
-    animation: removeItem 1s ease-out infinite;
-    -webkit-animation: removeItem 1s ease-out infinite;
+    animation: removeItem 1s ease-out forwards;
+    -webkit-animation: removeItem 1s ease-out forwards;
 }
 
 .inventory-item:nth-child(1) {
@@ -349,15 +350,25 @@ input:focus {
 
 .delete-btn {
     width: 2.3rem;
+    height: 2.3rem;
     margin-top: 0.3rem;
     justify-self: start;
     overflow: hidden;
+    border: 1px solid #b8b8b8;
+    border-radius:100%;
     cursor: pointer;
+    transition: all 0.6s;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
 }
 
-object {
-    width: 100%;
-    pointer-events: none;
+.delete-btn:hover{
+    background-image: url("/static/images/error.svg");
+    border: 1px solid transparent;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 @keyframes removeItem {

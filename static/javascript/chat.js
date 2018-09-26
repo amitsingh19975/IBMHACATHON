@@ -1,7 +1,7 @@
 let vm = new Vue({
     el: "#app",
     data: {
-        formHide: true,
+        formHide: false,
         messages: [],
         currentUser: 'amit',
         user_id: '',
@@ -10,16 +10,12 @@ let vm = new Vue({
     },
     methods: {
         login(type = false) {
-            if (!type) {
-                window.location.href = "https://join.slack.com/t/emergencychatroom/shared_invite/enQtNDQxNjY2Nzk0NDUzLWNkOTVjYzAzNDNjY2E1YTgyZDM1NGQyYjZkZGI5OTYxYzZmYzkyMmQ1NmU1Njc3MWZlNzMxNzcyYWZlYTUzM2E";
-            } else {
-
-            }
-
-            this.formHide = true;
+            window.location.href = "https://join.slack.com/t/emergencychatroom/shared_invite/enQtNDQxNjY2Nzk0NDUzLWNkOTVjYzAzNDNjY2E1YTgyZDM1NGQyYjZkZGI5OTYxYzZmYzkyMmQ1NmU1Njc3MWZlNzMxNzcyYWZlYTUzM2E";
         },
         parseInput() {
-            let obj = {};
+            let obj = {
+                show: true,
+            };
             let text = this.item;
             let textArray = text.split(':');
             textArray.forEach(element => {
@@ -36,11 +32,24 @@ let vm = new Vue({
             this.item = '';
         },
         deleteItem(index) {
-            this.items.splice(index, 1);
+            this.items[index].show = false;
+            setTimeout(() => {
+                this.items.splice(index, 1);
+            }, 1001);
         },
         uploadInventory() {
+            if (this.user_id === '' || !(this.items.length > 0))
+                return;
             let user_id = this.user_id;
-            let items = this.items;
+            let items = [];
+
+            this.items.forEach(el => {
+                items.push({
+                    name: el.name,
+                    amount: el.amount,
+                });
+            })
+
             let param = {
                 method: 'POST',
                 body: JSON.stringify({
@@ -59,6 +68,12 @@ let vm = new Vue({
                 .catch((e) => {
                     console.log(e);
                 });
+        },
+        validate() {
+            if (this.user_id !== '') {
+                this.formHide = true;
+
+            }
         }
     },
     watch: {}

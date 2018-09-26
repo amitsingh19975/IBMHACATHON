@@ -14,17 +14,30 @@
     <span id="app">
         <header class="nav">
             <ul>
-                <li class="nav-logo"><img src="/static/images/Logo.png" alt="EYEFRAME"></li>
-                <li class="nav-chat">
-                    <span class="tag">Chat</span>
-                    <img src="/static/images/chat.svg" alt="chat">
+                <li class="nav-logo">
+                    <img src="/static/images/Logo.png" @click="window.location.href='/'">
+                </li>
+                <li class="nav-chat" @click="window.location.href='/chat'">
+                    <img src="/static/images/chat.svg">
+                    <h3>CHAT</h3>
                 </li>
             </ul>
+            <div></div>
         </header>
 
         <main class="container">
             <section id="map"></section>
-            <section class="weather"></section>
+            <section class="weather">
+                <div :class="{'weather-section':true,'cover-weather':cover}">
+                    <div class="weather-glimpse">
+                        <img src="/static/images/sun.svg">
+                    </div>
+                    <div :class="{'weather-data':true,'show-arrow':cover,'cover-weather':cover}">cgf</div>
+                    <img src="/static/images/down-arrow.svg" :class="{'weather-arrow':true,'show-arrow':!cover}" @click="cover=true">
+                    <img src="/static/images/up-arrow-no-bg.svg" :class="{'weather-arrow':true,'show-arrow':cover}" @click="cover=false" >
+                </div>
+                
+            </section>
         </main>
 
         <footer></footer>
