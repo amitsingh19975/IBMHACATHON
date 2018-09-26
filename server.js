@@ -79,7 +79,7 @@ app.get('/fetch_inventory', function(req, res){
   var user_id = request.user_id;
 
   firebase.getInventory(user_id, function(data){
-    res.send( data );
+    res.json( data );
   });
 });
 
