@@ -74,10 +74,19 @@ app.get('/view_inventory', function(req, res){
     res.send( data );
   });
 });
+app.get('/fetch_inventory', function(req, res){
+  var request = req.query;
+  var user_id = request.user_id;
+
+  firebase.getInventory(user_id, function(data){
+    res.send( data );
+  });
+});
 
 app.post('/updateInventory', function(req, res){
   var request = req.body;
-  firebase.updateInventory(request, function() {
+  console.log(request);
+  firebase.overrideInventory(request, function() {
     res.send('Inventory Updated Successfully!');
   });
 });
@@ -99,13 +108,13 @@ app.post('/slackUpdateInventory', function(req, res) {
   
 });
 
-// app.listen(PORT,IP,()=>{
-//   console.log(`${IP}:${PORT}`);
-// });
-
-app.listen(PORT,()=>{
-  console.log(`http://localhost:${PORT}`);
+app.listen(PORT,IP,()=>{
+  console.log(`${IP}:${PORT}`);
 });
+
+// app.listen(PORT,()=>{
+//   console.log(`http://localhost:${PORT}`);
+// });
 
 async function parseArguements(arg) {
   var arr = arg.split(", ");

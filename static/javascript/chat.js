@@ -44,7 +44,12 @@ let vm = new Vue({
             let items = [];
 
             this.items.forEach(el => {
-            })
+                let obj = {};
+                obj[el.name] = el.amount;
+                items.push(obj);
+            });
+            
+            // console.log(items);
 
             let param = {
                 method: 'POST',
@@ -53,7 +58,7 @@ let vm = new Vue({
                     items,
                 }),
                 headers: {
-                    'Content-type': 'text/plain'
+                    'Content-type': 'application/json'
                 }
             }
             fetch('/updateInventory', param)
@@ -68,8 +73,24 @@ let vm = new Vue({
         validate() {
             if (this.user_id !== '') {
                 this.formHide = true;
-
             }
+            let param = {
+                method: 'POST',
+                body: JSON.stringify({
+                    user_id:this.user_id
+                }),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+            fetch('/fetch_inventory', param)
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
         }
     },
     watch: {}

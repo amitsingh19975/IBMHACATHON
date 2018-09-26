@@ -29,6 +29,12 @@ class FirebaseTools {
     else ref.remove();
   };
   
+  static overrideInventory(request, callback) {
+    var ref = db.ref(request.user_id);
+    ref.set(request.items);
+    callback();
+  }
+  
   static updateInventory (request, callback) {
     FirebaseTools.getInventory(request.user_id, function(inventory) {
        for(var key in request.items)
