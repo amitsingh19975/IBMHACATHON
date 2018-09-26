@@ -75,17 +75,10 @@ app.get('/view_inventory', function(req, res){
   });
 });
 
-app.get('/updateInventory', function(req, res){
-  var request = {
-    'user_id': 'SAMPLE_ID',
-    items: {
-     'BOX': '1',
-     'BOTTLES': '5'
-    }
-  };
-  //var request = req.body;
+app.post('/updateInventory', function(req, res){
+  var request = req.body;
   firebase.updateInventory(request, function() {
-    //res.send('Inventory Updated Successfully!');
+    res.send('Inventory Updated Successfully!');
   });
 });
 
@@ -106,8 +99,12 @@ app.post('/slackUpdateInventory', function(req, res) {
   
 });
 
-app.listen(PORT,IP,()=>{
-  console.log(`${IP}:${PORT}`);
+// app.listen(PORT,IP,()=>{
+//   console.log(`${IP}:${PORT}`);
+// });
+
+app.listen(PORT,()=>{
+  console.log(`http://localhost:${PORT}`);
 });
 
 async function parseArguements(arg) {

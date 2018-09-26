@@ -31,17 +31,10 @@
                     <label for="email">Email</label>
                 </span>
                 <span class="btn-collection">
-<<<<<<< HEAD
-                    <span class="btn btn-green" @click="login(false)">Login</span>
-                    <span class="btn" @click="login(true)">
-                        <img src="/static/images/google-icon.svg" alt="google" id="google-icon">
-                        <span>Google</span>
-=======
                     <span class="btn btn-green" @click="login">Login</span>
                     <span class="btn" @click="formHide = true">
                         <img src="/static/images/storage.svg" alt="inventory" id="inventory-icon">
                         <span>Inventory</span>
->>>>>>> 41035002d4469054bb5d726f712c0f3500a9b799
                     </span>
                 </span>
             </form>
@@ -52,7 +45,7 @@
             <div class="inventory-box" v-if="formHide">
                 <form @submit.prevent="parseInput" class="item-input">
                     <input type="text" placeholder="Item" v-model="item">
-                    <img src="/static/images/up-arrow.svg" alt="add" @click="parseInput">
+                    <img src="/static/images/up-arrow.svg" alt="add" @click="uploadInventory">
                 </form>
                 <div class="inventory-item" v-for="(i,k) in items">
                     <div class="delete-btn" @click="deleteItem(k)">
