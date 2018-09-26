@@ -41,12 +41,10 @@ let vm = new Vue({
             if (this.user_id === '' || !(this.items.length > 0))
                 return;
             let user_id = this.user_id;
-            let items = [];
+            let items = {};
 
             this.items.forEach(el => {
-                let obj = {};
-                obj[el.name] = el.amount;
-                items.push(obj);
+                items[el.name] = el.amount;
             });
             
             // console.log(items);
