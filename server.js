@@ -74,12 +74,15 @@ app.get('/view_inventory', function(req, res){
     res.send( data );
   });
 });
-app.get('/fetch_inventory', function(req, res){
-  var request = req.query;
+app.post('/fetch_inventory', function(req, res){
+  var request = req.body;
   var user_id = request.user_id;
+  
+  // console.log('>'+user_id);
 
   firebase.getInventory(user_id, function(data){
-    res.send( data );
+    // console.log(data);
+    res.json( data );
   });
 });
 

@@ -84,7 +84,13 @@ let vm = new Vue({
             fetch('/fetch_inventory', param)
                 .then(res => res.json())
                 .then(res => {
-                    
+                    for(var key in res) {
+                        let obj = {};
+                        obj.name = key;
+                        obj.amount = res[key];
+                        obj.show = true;
+                        this.items.push(obj);
+                    }
                 })
                 .catch((e) => {
                     console.log(e);
