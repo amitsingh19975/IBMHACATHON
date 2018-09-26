@@ -4,6 +4,7 @@ let vm = new Vue({
         formHide: true,
         messages: [],
         currentUser: 'amit',
+        user_id:'',
         items: [],
         item: '',
     },
@@ -38,10 +39,26 @@ let vm = new Vue({
             this.items.splice(index, 1);
         },
         uploadInventory(){
-            const param = {
-                'user_id': '',
-                'items': this.items
+            let user_id = this.user_id;
+            let items = this.items;
+            let param ={
+                method:'POST',
+                body:JSON.stringify({
+                    user_id,
+                    items,
+                }),
+                headers:{
+                    'Content-type':'text/plain'
+                }
             }
+            fetch('/updateInventory',param)
+                .then(res=>res.text())
+                .then(res=>{
+                    console.log(res);
+                })
+                .catch((e)=>{
+                    console.log(e);
+                });
         }
     },
     watch: {
