@@ -44,11 +44,12 @@ let vm = new Vue({
             let items = [];
 
             this.items.forEach(el => {
-                items.push({
-                    name: el.name,
-                    amount: el.amount,
-                });
-            })
+                let obj = {};
+                obj[el.name] = el.amount;
+                items.push(obj);
+            });
+            
+            // console.log(items);
 
             let param = {
                 method: 'POST',
@@ -57,7 +58,7 @@ let vm = new Vue({
                     items,
                 }),
                 headers: {
-                    'Content-type': 'text/plain'
+                    'Content-type': 'application/json'
                 }
             }
             fetch('/updateInventory', param)
