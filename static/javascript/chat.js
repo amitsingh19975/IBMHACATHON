@@ -44,10 +44,6 @@ let vm = new Vue({
             let items = [];
 
             this.items.forEach(el => {
-                items.push({
-                    name: el.name,
-                    amount: el.amount,
-                });
             })
 
             let param = {
