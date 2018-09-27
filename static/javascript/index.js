@@ -1,9 +1,14 @@
+let weatherForcast = [];
 vm = new Vue({
     el: "#app",
     data: {
         name: "asdf",
         map: "",
-        cover:false,
+        cover: [false, false, false, false],
+        weatherData: [],
+        hide: [false, false, false, false],
+        icons: [],
+        weatherForcast: [],
     },
     methods: {
         initMap() {
@@ -16,31 +21,103 @@ vm = new Vue({
                 zoom: 10
             });
 
-            let marker = new google.maps.Marker({position:m, map:this.map});
+            let marker = new google.maps.Marker({
+                position: m,
+                map: this.map
+            });
         },
         async mapElementCreate() {
             const google = document.querySelector("#google");
             const script = document.createElement('script');
-            let key ='';
-            fetch("/getApiKey")
-                .then(res=> res.json())
-                .then(res=>{
-                    key = res.key;
-                })
-                .catch(err=>console.log(err));
+            let key = '';
+            // fetch("/getApiKey")
+            //     .then(res=> res.json())
+            //     .then(res=>{
+            //         key = res.key;
+            //     })
+            //     .catch(err=>console.log(err));
             script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=vm.initMap`;
             script.async = true;
             script.defer = true;
             google.appendChild(script);
+        },
+        async initWeather() {
+            fetch('/static/data/currentweatherdata.json')
+                .then(res => res.json())
+                .then(res => this.weatherData.push(res))
+                .catch(e => console.log(e));
+            fetch('/static/data/icons.json')
+                .then(res => res.json())
+                .then(res => {
+                    let i = 0;
+                    for (const key in res) {
+                        this.icons[i++] = res[key];
+                    }
+                })
+                .catch(e => console.log(e));
+            let ob = [];
+            fetch('/static/data/weatherdata.json')
+                .then(res => res.json())
+                .then(res => {
+                    for (let i = 0; i < 3; i++) {
+                        let obj = {};
+                        for (const key in res) {
+                            if (res.hasOwnProperty(key)) {
+                                if(key === 'daypart'){
+                                    const temp = res[key][0];
+                                    for (const k in temp) {
+                                        if (temp.hasOwnProperty(k)) {
+                                            obj[k] = temp[k][i];  
+                                        }
+                                    }
+                                    continue;
+                                }
+                                obj[key] = res[key][i];
+                            }
+                        }
+                        ob.push(obj);
+                    }
+                    this.weatherForcast = ob;
+                })
+                .catch(e => console.log(e));
+        },
+        weatherType(code) {
+            return `/static/images/${code}.svg`;
+        },
+        coverToggle(index, toggle) {
+            Vue.set(this.cover, index, toggle);
+            this.remove(index, !toggle);
+        },
+        remove(index, type = false) {
+            if (!type) {
+                for (let i = 0; i < 4; i++) {
+                    if (i !== index) {
+                        Vue.set(this.hide, i, true);
+                    } else {
+                        Vue.set(this.hide, i, false);
+                    }
+                }
+            } else {
+                for (const i in this.hide) {
+                    Vue.set(this.hide, i, false);
+                }
+            }
         },
     },
     beforeCreate() {
         this.$nextTick = function () {
             this.initMap();
         };
+
     },
     beforeMount() {
         this.mapElementCreate();
     },
+    created() {
+        this.initWeather();
+    },
+    watch: {
+        cover() {}
+    }
 
 });

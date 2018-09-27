@@ -28,15 +28,139 @@
         <main class="container">
             <section id="map"></section>
             <section class="weather">
-                <div :class="{'weather-section':true,'cover-weather':cover}">
+                <div :class="{'weather-section':true,'cover-weather':cover[0],'remove-weather':hide[0]}">
                     <div class="weather-glimpse">
-                        <img src="/static/images/sun.svg">
+                        <img :src="weatherType(weatherData[0].iconCode)">
+                        <h2>{{weatherData[0].temperature}}&#8451</h2>
+                        <h3>{{weatherData[0].cloudCoverPhrase}}</h3>
+                        <h3>{{icons[Number(weatherData[0].iconCode)]}}</h3>
                     </div>
-                    <div :class="{'weather-data':true,'show-arrow':cover,'cover-weather':cover}">cgf</div>
-                    <img src="/static/images/down-arrow.svg" :class="{'weather-arrow':true,'show-arrow':!cover}" @click="cover=true">
-                    <img src="/static/images/up-arrow-no-bg.svg" :class="{'weather-arrow':true,'show-arrow':cover}" @click="cover=false" >
+                    <div :class="{'weather-data':true,'show-arrow':cover[0],'cover-weather':cover[0]}">
+                        <span class="weather-data-text">
+                            <h2>Relative Humidity : </h2>
+                            <h3>{{weatherData[0].relativeHumidity}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Day : </h2>
+                            <h3>{{weatherData[0].dayOfWeek}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Min Temperature (24hr) : </h2>
+                            <h3>{{weatherData[0].temperatureMin24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Max Temperature (24hr) : </h2>
+                            <h3>{{weatherData[0].temperatureMax24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Temperature Heat Index : </h2>
+                            <h3>{{weatherData[0].temperatureHeatIndex}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Temperature Change (24hr) : </h2>
+                            <h3>{{weatherData[0].temperatureChange24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Precipitation (24hr) : </h2>
+                            <h3>{{weatherData[0].precip24Hour}} cm</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Altimeter : </h2>
+                            <h3>{{weatherData[0].pressureAltimeter}} Pa</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Change : </h2>
+                            <h3>{{weatherData[0].pressureChange}} Pa</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Tendency Trend : </h2>
+                            <h3>{{weatherData[0].pressureTendencyTrend}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Speed : </h2>
+                            <h3>{{weatherData[0].windSpeed}} m/s</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Description : </h2>
+                            <h3>{{weatherData[0].wxPhraseShort}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Direction Cardinal : </h2>
+                            <h3>{{weatherData[0].windDirectionCardinal}}</h3>
+                        </span>
+                    </div>
+                    <img src="/static/images/down-arrow.svg" :class="{'weather-arrow':true,'show-arrow':!cover[0]}"
+                        @click="coverToggle(0,true)">
+                    <img src="/static/images/up-arrow-no-bg.svg" :class="{'weather-arrow':true,'show-arrow':cover[0]}"
+                        @click="coverToggle(0,false)">
                 </div>
-                
+                <div :class="{'weather-section':true,'cover-weather':cover[i + 1],'remove-weather':hide[i + 1]}" v-for="(weather,i) in weatherForcast">
+                    <div class="weather-glimpse">
+                        <img :src="weatherType(weather.iconCode)">
+                        <h2>{{weather.temperature}}&#8451</h2>
+                        <h3>{{weather.cloudCoverPhrase}}</h3>
+                        <h3>{{icons[Number(weather.iconCode)]}}</h3>
+                    </div>
+                    <div :class="{'weather-data':true,'show-arrow':cover[i + 1],'cover-weather':cover[i + 1]}">
+                        <span class="weather-data-text">
+                            <h2>Relative Humidity : </h2>
+                            <h3>{{weather.relativeHumidity}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Day : </h2>
+                            <h3>{{weather.dayOfWeek}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Min Temperature (24hr) : </h2>
+                            <h3>{{weather.temperatureMin24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Max Temperature (24hr) : </h2>
+                            <h3>{{weather.temperatureMax24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Temperature Heat Index : </h2>
+                            <h3>{{weather.temperatureHeatIndex}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Temperature Change (24hr) : </h2>
+                            <h3>{{weather.temperatureChange24Hour}}&#8451</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Precipitation (24hr) : </h2>
+                            <h3>{{weather.precip24Hour}} cm</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Altimeter : </h2>
+                            <h3>{{weather.pressureAltimeter}} Pa</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Change : </h2>
+                            <h3>{{weather.pressureChange}} Pa</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Pressure Tendency Trend : </h2>
+                            <h3>{{weather.pressureTendencyTrend}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Speed : </h2>
+                            <h3>{{weather.windSpeed}} m/s</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Description : </h2>
+                            <h3>{{weather.wxPhraseShort}}</h3>
+                        </span>
+                        <span class="weather-data-text">
+                            <h2>Wind Direction Cardinal : </h2>
+                            <h3>{{weather.windDirectionCardinal}}</h3>
+                        </span>
+                    </div>
+                    <img src="/static/images/down-arrow.svg" :class="{'weather-arrow':true,'show-arrow':!cover[i + 1]}"
+                        @click="coverToggle(i + 1,true)">
+                    <img src="/static/images/up-arrow-no-bg.svg" :class="{'weather-arrow':true,'show-arrow':cover[i + 1]}"
+                        @click="coverToggle(i + 1,false)">
+                </div>
+
             </section>
         </main>
 
