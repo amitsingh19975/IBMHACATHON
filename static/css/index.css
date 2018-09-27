@@ -6,6 +6,7 @@
     list-style: none;
     box-sizing: border-box;
     font-family: sans-serif;
+    user-select: none;
 }
 
 .container {
@@ -70,7 +71,7 @@
     -o-border-radius: 3px;
 }
 
-.nav-chat img{
+.nav-chat img {
     width: 4rem;
 }
 
@@ -82,10 +83,11 @@
 .weather {
     flex: 0 0 320px;
     height: 100%;
-    background-image: linear-gradient(#2C3E50,#4CA1AF);
+    background-image: linear-gradient(#2C3E50, #4CA1AF);
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
 /* .tag{
     color: white;
     font-weight: 100;
@@ -103,15 +105,16 @@
     
 } */
 
-.weather-section{
+.weather-section {
     width: 100%;
     height: 25%;
     background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*justify-content: space-between;
-    */color: white;
+    /*justify-content: space-between;*/
+    color: white;
+    border-bottom: 1px solid #d3d3d313;
     position: relative;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -122,7 +125,7 @@
     padding-top: 1rem;
 }
 
-.weather-arrow{
+.weather-arrow {
     height: 3rem;
     width: 3rem;
     position: absolute;
@@ -142,11 +145,12 @@
     opacity: 0;
     z-index: 1;
 }
-.weather-arrow:hover{
+
+.weather-arrow:hover {
     background-color: rgba(248, 248, 248, 0.3);
 }
 
-.cover-weather{
+.cover-weather {
     height: 100% !important;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
@@ -155,12 +159,12 @@
     -o-transition: all 0.3s;
 }
 
-.show-arrow{
+.show-arrow {
     opacity: 1 !important;
     z-index: 2;
 }
 
-.weather-data{
+.weather-data {
     height: 0%;
     max-height: 90%;
     width: 100%;
@@ -170,9 +174,15 @@
     margin-top: 4rem;
     overflow-y: scroll;
     margin-bottom: 4rem;
+    justify-content: center;
 }
 
-.weather-glimpse{
+.weather-data span{
+    display: flex;
+    align-items: center;
+}
+
+.weather-glimpse {
     min-height: 0;
     max-height: 105px;
     border: 1px solid transparent;
@@ -182,20 +192,20 @@
     flex-direction: column;
 }
 
-.weather-glimpse img{
+.weather-glimpse img {
     width: 5rem;
 }
 
-.weather-glimpse h2{
+.weather-glimpse h2 {
     font-size: 2rem;
 }
 
-.weather-glimpse h3{
+.weather-glimpse h3 {
     font-size: 1rem;
     font-weight: 100;
 }
 
-.weather-data-text{
+.weather-data-text {
     font-size: 2rem;
     display: flex;
     background-color: rgba(0, 0, 0, 0.295);
@@ -203,15 +213,72 @@
     border-bottom: 1px solid #ffffff05;
     height: 6rem;
 }
-.weather-data-text:nth-child(1){
+
+.weather-data-text:nth-child(1) {
     border-top: 1px solid #ffffff05;
 }
 
-.weather-data-text h3{
+.weather-data-text h3 {
     font-weight: 100;
     margin-left: 1rem;
 }
 
-.remove-weather{
+.remove-weather {
     display: none;
+}
+
+.night-weather {
+    display: none;
+}
+
+.right-arrow {
+    position: absolute;
+    right: 0rem;
+    height: 100%;
+    width: 3rem;
+    top: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+.right-arrow img{
+    width: 2.6rem;
+    animation: night-arrow 1s ease-in-out infinite;
+    -webkit-animation: night-arrow 1s ease-in-out infinite;
+}
+
+.right-arrow:hover{
+    background-color: rgba(255, 255, 255, 0.24);
+}
+
+@keyframes night-arrow {
+    0% {
+        transform: translateX(-0.6rem);
+        -webkit-transform: translateX(-0.6rem);
+        -moz-transform: translateX(-0.6rem);
+        -ms-transform: translateX(-0.6rem);
+        -o-transform: translateX(-0.6rem);
+}
+
+    50% {
+        transform: translateX(0.2rem);
+        -webkit-transform: translateX(0.2rem);
+        -moz-transform: translateX(0.2rem);
+        -ms-transform: translateX(0.2rem);
+        -o-transform: translateX(0.2rem);
+}
+
+    100% {
+        transform: translateX(-0.6rem);
+        -webkit-transform: translateX(-0.6rem);
+        -moz-transform: translateX(-0.6rem);
+        -ms-transform: translateX(-0.6rem);
+        -o-transform: translateX(-0.6rem);
+}
 }

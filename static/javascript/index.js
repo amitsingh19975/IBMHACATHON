@@ -1,14 +1,14 @@
-let weatherForcast = [];
 vm = new Vue({
     el: "#app",
     data: {
         name: "asdf",
         map: "",
         cover: [false, false, false, false],
-        weatherData: [],
+        weatherData: {},
         hide: [false, false, false, false],
         icons: [],
-        weatherForcast: [],
+        weatherForecast: [],
+        nightDay:[true,true,true],
     },
     methods: {
         initMap() {
@@ -42,9 +42,15 @@ vm = new Vue({
             google.appendChild(script);
         },
         async initWeather() {
-            fetch('/static/data/currentweatherdata.json')
+            fetch('/getCurrentWeather')
                 .then(res => res.json())
-                .then(res => this.weatherData.push(res))
+                .then(res => {
+                    for (const key in res) {
+                        if (res.hasOwnProperty(key)) {
+                            this.weatherData[key] = res[key];
+                        }
+                    }
+                })
                 .catch(e => console.log(e));
             fetch('/static/data/icons.json')
                 .then(res => res.json())
@@ -56,10 +62,10 @@ vm = new Vue({
                 })
                 .catch(e => console.log(e));
             let ob = [];
-            fetch('/static/data/weatherdata.json')
+            fetch('/getWeatherForecast')
                 .then(res => res.json())
                 .then(res => {
-                    for (let i = 0; i < 3; i++) {
+                    for (let i = 0; i < 5; i+=2) {
                         let obj = {};
                         for (const key in res) {
                             if (res.hasOwnProperty(key)) {
@@ -67,7 +73,7 @@ vm = new Vue({
                                     const temp = res[key][0];
                                     for (const k in temp) {
                                         if (temp.hasOwnProperty(k)) {
-                                            obj[k] = temp[k][i];  
+                                            obj[k] = [temp[k][i],temp[k][i + 1]];
                                         }
                                     }
                                     continue;
@@ -77,11 +83,13 @@ vm = new Vue({
                         }
                         ob.push(obj);
                     }
-                    this.weatherForcast = ob;
+                    this.weatherForecast = ob;
+                    // console.log(this.weatherForecast)
                 })
                 .catch(e => console.log(e));
         },
         weatherType(code) {
+            code = typeof(code) === 'number'?code:44;
             return `/static/images/${code}.svg`;
         },
         coverToggle(index, toggle) {
@@ -103,6 +111,9 @@ vm = new Vue({
                 }
             }
         },
+        nightDaySetter(index){
+            Vue.set(this.nightDay,index,!this.nightDay[index]);
+        }
     },
     beforeCreate() {
         this.$nextTick = function () {
