@@ -35,7 +35,7 @@ let vm = new Vue({
             this.items[index].show = false;
             setTimeout(() => {
                 this.items.splice(index, 1);
-            }, 600);
+            }, 300);
         },
         uploadInventory() {
             if (this.user_id === '' || !(this.items.length > 0))

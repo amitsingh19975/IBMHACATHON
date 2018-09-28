@@ -9,6 +9,9 @@ vm = new Vue({
         icons: [],
         weatherForecast: [],
         nightDay:[true,true,true],
+        notiHide:true,
+        notifications:[],
+        textInput:'',
     },
     methods: {
         initMap() {
@@ -113,6 +116,28 @@ vm = new Vue({
         },
         nightDaySetter(index){
             Vue.set(this.nightDay,index,!this.nightDay[index]);
+        },
+        readAlerts(){
+            fetch('/alerts')
+                .then(res=>res.json())
+                .then(res=>{
+                    for(let x of res){
+                        this.notifications.push(x);
+                    }
+                })
+                .catch(e=>console.log(e));
+        },
+        send(){
+            let param ={
+                method:'POST',
+                headers:{
+                    'Content-type':'application/json'
+                },
+                body:JSON.stringify({email:textInput})
+            }
+            fetch('/python/email',param)
+                .then(res=>console.log(res.text()))
+                .catch(e=>console.log(e));
         }
     },
     beforeCreate() {
