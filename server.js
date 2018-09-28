@@ -9,6 +9,7 @@ const TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1');
 const fs = require('fs');
 const mailer = require('./mailer.js');
 const firebase = require('./firebase.js');
+const slack = require('./slack.js');
 // var tts = require('./TTSService.js');
 
 var textToSpeech = new TextToSpeechV1({
@@ -19,8 +20,10 @@ var textToSpeech = new TextToSpeechV1({
 
 
 const app = express();
-const weatherApiUrl = 'https://weather.api.here.com/weather/1.0/report.json?app_id=iJrAATYzuKrylgF1Jh79&app_code=DW_yrqBAgzO_demWfq2oSw&product=nws_alerts&name=Dallas,TX';
-const safeLocationMessage = 'NO WARNINGS DETECTED IN THIS REGION. SHOWING A SAMPLE WARNING OF TEXAS INSTEAD:\nThe Flood Warning continues for the following areas in Texas.  East Fork Trinity River At McKinney Affecting Collin County Trinity River At Dallas Affecting Dallas County Trinity River Near Rosser Affecting Ellis and Kaufman Counties Trinity River At Trinidad Affecting Henderson and Navarro Counties The Flood Warning continues for The Trinity River Near Rosser. * At 0730 AM Monday the stage was 32.88 feet. * Flood stage is  31 feet. * Minor flooding is occurring and it is expected to continue. * Forecast. The river will continue rising to a crest near 34 feet by Monday evening. The river should fall below flood stage Tuesday afternoon. * At 34 feet, Minor to moderate flooding of low areas and roads within the levees is expected.'
+const weatherApiUrl = 'https://weather.api.here.com/weather/1.0/report.json?app_id=iJrAATYzuKrylgF1Jh79&app_code=DW_yrqBAgzO_demWfq2oSw&product=nws_alerts&name=Washington,Seattle';
+const safeLocationHead = 'NO WARNINGS DETECTED IN SEATTLE. SHOWING A SAMPLE WARNING OF TEXAS INSTEAD...';
+const safeLocationMessage = 'The Flood Warning continues for the following areas in Texas.  East Fork Trinity River At McKinney Affecting Collin County Trinity River At Dallas Affecting Dallas County Trinity River Near Rosser Affecting Ellis and Kaufman Counties Trinity River At Trinidad Affecting Henderson and Navarro Counties The Flood Warning continues for The Trinity River Near Rosser. * At 0730 AM Monday the stage was 32.88 feet. * Flood stage is  31 feet. * Minor flooding is occurring and it is expected to continue. * Forecast. The river will continue rising to a crest near 34 feet by Monday evening. The river should fall below flood stage Tuesday afternoon. * At 34 feet, Minor to moderate flooding of low areas and roads within the levees is expected.'
+const messageEnd = '\nInformation related to disaster preparedness can be found in https://www.ready.gov/'
 const textToSpeechURL = "https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize";
 let lastMessage = '';
 let messageList = [];
@@ -38,12 +41,17 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 app.engine('html', ejs.renderFile);
 
+app.get('/control', (req, res) => {
+  res.render('index2');
+});
+
 app.get('/', (req, res) => {
     res.render('index');
 });
 
 app.get('/services', (req, res) => {
     res.render('services');
+});
 
 app.get('/getApiKey', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -109,7 +117,7 @@ app.get('/message', (req, res) => {
         }
 
         let result;
-        if(messageList.length==0) result = [safeLocationMessage];
+        if(messageList.length==0) result = [safeLocationHead, safeLocationMessage];
         else result = messageList;
         res.json({'data':result});
     });
@@ -156,7 +164,7 @@ app.post('/python/email', (req, res) => {
     emailList.push(req.body.email);
 
     let emailArgs = emailList.join(', ');
-    let messageArgs = messageList.length==0 ? '' : messageList[0];
+    let messageArgs = messageList.length==0 ? safeLocationMessage : messageList[0];
 
     console.log("EMAIL TRIGGERED");
 
@@ -164,6 +172,7 @@ app.post('/python/email', (req, res) => {
         messageArgs = safeLocationMessage; 
     
         //Send previous audio file | Python script
+        messageArgs = messageArgs + messageEnd;
         mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
     }
     else {
@@ -174,6 +183,7 @@ app.post('/python/email', (req, res) => {
         //     mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
         // });
         // TESTING ONLY:
+        messageArgs = messageArgs + messageEnd;
         mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
     }
 });
@@ -194,6 +204,17 @@ app.get('/send_inventory', function(req, res){
   });
 });
 
+app.get('/alert', function(req, res) {
+  console.log('TRIGGERED');
+  firebase.getGlobalInventory(function(data){
+     let result = {};
+     console.log('REIEVED');
+     if(data['Condition'] == 'CRITICAL') result = data;
+     console.log(result);
+     res.json(result);
+  });
+});
+
 app.get('/view_inventory', function(req, res){
   var request = req.query;
   var user_id = request.user_id;
@@ -202,6 +223,18 @@ app.get('/view_inventory', function(req, res){
     data = beautifyData(data);
     if ( data == 'null' ) data = '`INVENTORY is empty.`';
     res.send( data );
+  });
+});
+
+app.get('/get_userid', function(req, res){
+  var request = req.query;
+  res.send( 'Your Slack UserID is ' + request.user_id );
+});
+
+app.get('/get_global_inventory', function(req, res) {
+  firebase.getGlobalInventory(function(data){
+    data = beautifyData(data);
+    slack.sendMessage(data);
   });
 });
 app.post('/fetch_inventory', function(req, res){
@@ -216,7 +249,7 @@ app.post('/fetch_inventory', function(req, res){
   });
 });
 
-app.post('/updateInventory', function(req, res){
+app.post('/update_inventory', function(req, res){
   var request = req.body;
   console.log(request);
   firebase.overrideInventory(request, function() {
@@ -255,6 +288,31 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
     console.log(`http://localhost:${8081}`);
 });
+
+async function parseArguements(arg) {
+  var arr = arg.split(", ");
+  var n = arr.length;
+  var ob = {},
+      item, key, value;
+  for(var i=0;i<n;i++) {
+    item = arr[i].split(':');
+    key = item[0].trim();
+    value = item[1].trim();
+    ob[key] = value;
+  }
+  
+  return await ob;
+  
+}
+
+function beautifyData(data) {
+  if(data == 'undefined') return 'null';
+  data = JSON.stringify(data);
+  data = data.replace(/,/g, "\n");
+  data = data.replace(/[{"}]/g, "");
+  data = data.replace(/:/g, ": ");
+  return data;
+}
 
 // function test(res, callback) {
 //   let ob = [];

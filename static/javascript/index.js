@@ -120,27 +120,28 @@ vm = new Vue({
             Vue.set(this.nightDay,index,!this.nightDay[index]);
         },
         readAlerts(){
-            fetch('/alerts')
+            fetch('/alert')
                 .then(res=>res.json())
                 .then(res=>{
-                    for(let x of res){
-                        this.notifications.push(x);
+                    for(let x in res){
+                        let data = `${x} : ${res[x]}`;
+                        this.notifications.push(data);
                     }
                 })
                 .catch(e=>console.log(e));
         },
-        send(){
-            let param ={
-                method:'POST',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify({email:textInput})
-            }
-            fetch('/python/email',param)
-                .then(res=>console.log(res.text()))
-                .catch(e=>console.log(e));
-        }
+        // send(){
+        //     let param ={
+        //         method:'POST',
+        //         headers:{
+        //             'Content-type':'application/json'
+        //         },
+        //         body:JSON.stringify({email:textInput})
+        //     }
+        //     fetch('/python/email',param)
+        //         .then(res=>console.log(res.text()))
+        //         .catch(e=>console.log(e));
+        // }
     },
     beforeCreate() {
         this.$nextTick = function () {
@@ -150,6 +151,7 @@ vm = new Vue({
     },
     beforeMount() {
         this.mapElementCreate();
+        this.readAlerts();
     },
     created() {
         this.initWeather();

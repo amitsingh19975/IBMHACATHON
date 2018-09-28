@@ -9,18 +9,18 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-  mail: function() {
+  send: function(toID, sub, body) {
     var mailOptions = {
-      to: 'shikhar.vaish90@gmail.com',
-      subject: 'Sending Email using Node.js',
-      text: 'That was easy',
+      to: toID,
+      subject: sub,
+      text: body,
       // html: '<p> Your html here </p>'
-      // attachments: [
-      //   {
-      //     filename: 'Alert_message',
-      //     path: 'Alert_message.wav'
-      //   }
-      // ]
+      attachments: [
+        {
+          filename: 'message.wav',
+          path: 'message.wav'
+        }
+      ]
     };
     transporter.sendMail(mailOptions, function(error, info){
       if (error) console.log(error);

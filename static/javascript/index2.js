@@ -53,7 +53,8 @@ vm = new Vue({
                 .then(res => res.json())
                 .then(res => {
                     key = res.key;
-                    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=vm.initMap`;
+                    // script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=vm.initMap`;
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=&callback=vm.initMap`;
                     script.async = true;
                     script.defer = true;
                     google.appendChild(script);
@@ -120,9 +121,9 @@ vm = new Vue({
             if(info.indexOf('Medium Risk') != -1){
                 url = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" ;
             }else if(info.indexOf('High Risk') != -1){
-                url = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
+                url = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
             }else{
-                url = "http://maps.google.com/mapfiles/ms/icons/red-dot.png" ;
+                url = "http://maps.google.com/mapfiles/ms/icons/green-dot.png" ;
             }
             let marker = new google.maps.Marker({
                 position: latlng,
