@@ -121,9 +121,9 @@ vm = new Vue({
             if(info.indexOf('Medium Risk') != -1){
                 url = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" ;
             }else if(info.indexOf('High Risk') != -1){
-                url = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                url = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
             }else{
-                url = "http://maps.google.com/mapfiles/ms/icons/green-dot.png" ;
+                url = "http://maps.google.com/mapfiles/ms/icons/red-dot.png" ;
             }
             let marker = new google.maps.Marker({
                 position: latlng,

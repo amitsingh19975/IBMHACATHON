@@ -61,8 +61,8 @@ app.get('/getApiKey', function(req, res) {
 app.post('/python', (req, res) => {
         let images = req.body;
         if(images.length > 1){
-            images = `./public/images/${images[0]}.jpg ./public/images/${images[1]}.jpg`;
-            cmd.get(`./public/python/structure_change.py ${images}`, function (err, data, stderr) {
+            images = `./static/images/${images[0]}.jpg ./static/images/${images[1]}.jpg`;
+            cmd.get(`./static/python/structure_change.py ${images}`, function (err, data, stderr) {
                 if (stderr) console.log(stderr);
                 if (err) console.log(err);
                 let temp = data.split('\n');
@@ -72,8 +72,8 @@ app.post('/python', (req, res) => {
             }
         );
         }else{
-            images = `./public/images/${images[0]}.jpg`;
-            cmd.get(`./public/python/Vi.py ${images}`, function (err, data, stderr) {
+            images = `./static/images/${images[0]}.jpg`;
+            cmd.get(`./static/python/Vi.py ${images}`, function (err, data, stderr) {
                 if (stderr) console.log(stderr);
                 if (err) console.log(err);
                 let temp = data.split('\n');
@@ -151,7 +151,7 @@ app.get('/getCurrentWeather', (req, res) => {
 });
 
 app.post('/python/sms', (req, res) => {
-    cmd.get(`python3 ./public/python/sms.py`, function (err, data, stderr) {
+    cmd.get(`python3 ./static/python/sms.py`, function (err, data, stderr) {
         if (stderr) console.log(stderr);
         if (err) console.log(err);
         console.log(data);
@@ -178,13 +178,13 @@ app.post('/python/email', (req, res) => {
     else {
         messageArgs = messageList[0];
         lastMessage = messageArgs;
-        // generateSpeech(messageArgs, function(){
-        //     // Send new audio file | python script
-        //     mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
-        // });
+        generateSpeech(messageArgs, function(){
+            // Send new audio file | python script
+            mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+        });
         // TESTING ONLY:
-        messageArgs = messageArgs + messageEnd;
-        mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+        // messageArgs = messageArgs + messageEnd;
+        // mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
     }
 });
 
@@ -313,29 +313,6 @@ function beautifyData(data) {
   data = data.replace(/:/g, ": ");
   return data;
 }
-
-// function test(res, callback) {
-//   let ob = [];
-//   for (let i = 0; i < 5; i+=2) {
-//       let obj = {};
-//                               for (const key in res) {
-//                                   if (res.hasOwnProperty(key)) {
-//                                       if(key === 'daypart'){
-//                                           const temp = res[key][0];
-//                                           for (const k in temp) {
-//                                               if (temp.hasOwnProperty(k)) {
-//                                                   obj[k] = [temp[k][i],temp[k][i + 1]];
-//                                               }
-//                                           }
-//                                           continue;
-//                                       }
-//                                       obj[key] = res[key][i];
-//                                   }
-//                               }
-//                               ob.push(obj);
-//                           }
-//   callback(ob);
-// }
 
 async function generateSpeech(message, callback) {
     await tts.Synthesize(message);
