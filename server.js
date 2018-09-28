@@ -32,7 +32,6 @@ app.get('/', function(req, res) {
   // });
 });
 
-// TODO: 
 app.get('/getApiKey', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({key : 'AIzaSyBzAaIGJ44drCpI0VYw0L4HOMc6UZIQXkY'}));
