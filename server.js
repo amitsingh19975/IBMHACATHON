@@ -10,7 +10,7 @@ const fs = require('fs');
 const mailer = require('./mailer.js');
 const firebase = require('./firebase.js');
 const slack = require('./slack.js');
-// var tts = require('./TTSService.js');
+var tts = require('./TTSService.js');
 
 var textToSpeech = new TextToSpeechV1({
   username: '35ecbd89-f53e-4a22-8148-1c17da181375',
@@ -337,7 +337,7 @@ function beautifyData(data) {
 //   callback(ob);
 // }
 
-// async function generateSpeech(message, callback) {
-//     await tts.Synthesize(message);
-//     callback();
-// }
+async function generateSpeech(message, callback) {
+    await tts.Synthesize(message);
+    callback();
+}

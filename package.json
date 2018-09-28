@@ -26,7 +26,15 @@
     "nodemailer": "^4.6.8",
     "path": "^0.12.7",
     "request": "^2.88.0",
-    "unirest": "^0.5.1"
+    "unirest": "^0.5.1",
+    "pytalk": "^1.0.5",
+    "python-shell": "^1.0.4",
+    "speaker": "^0.4.1",
+    "wav": "^1.0.1",
+    "xmlbuilder": "^8.2.2",
+    "audiobuffer-to-wav": "^1.0.0",
+    "web-audio-api": "^0.2.2",
+    "watson-developer-cloud": "^3.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
