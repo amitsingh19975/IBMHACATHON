@@ -19,6 +19,13 @@ class FirebaseTools {
     });
   };
   
+  static getGlobalInventory(callback) {
+    var ref = db.ref('Global Inventory Info');
+    ref.once("value", function(snapshot) {
+      callback(snapshot.val());
+    });
+  };
+  
   static updateItem(user_id, item, itemCount) {
     var ob = {};
     ob[item] = itemCount;

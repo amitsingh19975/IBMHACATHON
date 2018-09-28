@@ -11,6 +11,26 @@ const IP = process.env.IP;
 // const request = require('request');
 const slack = require('./slack.js');
 
+const pytalk = require('pytalk');
+const TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1');
+const fs = require('fs');
+// const tts = require('./TTSService.js');
+
+var textToSpeech = new TextToSpeechV1({
+  username: '35ecbd89-f53e-4a22-8148-1c17da181375',
+  password: 'RCgvfhWPoLzR',
+  url: 'https://stream.watsonplatform.net/text-to-speech/api/'
+});
+
+
+// const app = express();
+const weatherApiUrl = 'https://weather.api.here.com/weather/1.0/report.json?app_id=iJrAATYzuKrylgF1Jh79&app_code=DW_yrqBAgzO_demWfq2oSw&product=nws_alerts&name=Dallas,TX';
+const safeLocationMessage = 'NO WARNINGS DETECTED IN THIS REGION. SHOWING A SAMPLE WARNING OF TEXAS INSTEAD:\nThe Flood Warning continues for the following areas in Texas.  East Fork Trinity River At McKinney Affecting Collin County Trinity River At Dallas Affecting Dallas County Trinity River Near Rosser Affecting Ellis and Kaufman Counties Trinity River At Trinidad Affecting Henderson and Navarro Counties The Flood Warning continues for The Trinity River Near Rosser. * At 0730 AM Monday the stage was 32.88 feet. * Flood stage is  31 feet. * Minor flooding is occurring and it is expected to continue. * Forecast. The river will continue rising to a crest near 34 feet by Monday evening. The river should fall below flood stage Tuesday afternoon. * At 34 feet, Minor to moderate flooding of low areas and roads within the levees is expected.'
+const textToSpeechURL = "https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize";
+let lastMessage = '';
+let messageList = [];
+let emailList = ["bahushruth.bahushruth@gmail.com"];
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -20,19 +40,140 @@ app.use(bodyParser.urlencoded({
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
 app.engine('html', ejs.renderFile);
+app.set('view engine', 'ejs');
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
-app.get('/', function(req, res) {
-  res.render('index.html');
-  // mailer.mail();
-  // cmd.run('curl -o weatherdata.json -k https://ef5128a4-86b4-47b8-b14f-a0cd74abf0ef:MwN42ReQZ9@twcservice.mybluemix.net:443/api/weather/v1/geocode/9.596478/76.522653/forecast/daily/3day.json', function(data) {
-  //   console.log(data);
-  // });
-  // cmd.run('curl -o data.json -k https://ef5128a4-86b4-47b8-b14f-a0cd74abf0ef:MwN42ReQZ9@twcservice.mybluemix.net:443/api/weather/v1/geocode/9.596478/76.522653/forecast/daily/3day.json', function(data) {
-  //   console.log('completed');  
-  // });
+app.get('/services', (req, res) => {
+    res.render('services');
 });
 
-// TODO: 
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
+app.post('/python', (req, res) => {
+        let images = req.body;
+        if(images.length > 1){
+            images = `./public/images/${images[0]}.jpg ./public/images/${images[1]}.jpg`;
+            cmd.get(`./public/python/structure_change.py ${images}`, function (err, data, stderr) {
+                if (stderr) console.log(stderr);
+                if (err) console.log(err);
+                let temp = data.split('\n');
+                console.log(temp);
+
+                res.json({'data':temp});
+            }
+        );
+        }else{
+            images = `./public/images/${images[0]}.jpg`;
+            cmd.get(`./public/python/Vi.py ${images}`, function (err, data, stderr) {
+                if (stderr) console.log(stderr);
+                if (err) console.log(err);
+                let temp = data.split('\n');
+                console.log(temp);
+
+                res.json({'data':temp});
+            }
+        );
+        }    
+});
+
+app.get('/message', (req, res) => {
+    let command = `curl -X GET "${weatherApiUrl}"`;
+
+    cmd.get(command, function(err, data, stderr) {
+        if(stderr) console.log(stderr);
+        if(err) console.log(err);
+        // console.log(data);
+        let temp = data.split('\n');
+        let t = [];
+        for(let x in temp) {
+            if(temp[x] !=''){
+                t.push(temp[x]);
+            }
+        }
+
+        messageList = [];
+        // console.log(t);
+        let jsonData = JSON.parse(t[0]);
+        if(jsonData.hasOwnProperty('nwsAlerts')) {
+            let warning = jsonData.nwsAlerts.warning;
+            for(var i in warning) {
+                let m = warning[i].message;
+                m = m.substring(0, m.length - 3);
+                messageList.push(m);
+            }
+        }
+
+        let result;
+        if(messageList.length==0) result = [safeLocationMessage];
+        else result = messageList;
+        res.json({'data':result});
+    });
+});
+
+app.get('/getWeatherForecast', (req, res) => {
+    let command = 'curl -X GET "https://api.weather.com/v3/wx/forecast/daily/3day?geocode=47.609862%2C-122.328964&units=s&language=en-US&format=json&apiKey=5424e9662cbf4bc3a4e9662cbf4bc3fe" -H "accept: application/json; charset=UTF-8"';
+    cmd.get(command, function(err, data, stderr) {
+        if(stderr) console.log(stderr);
+        if(err) console.log(err);
+
+        console.log("Did that");
+        // fs.writeFileSync("Weatherdata.json", data);
+        res.json(data);
+    });
+});
+
+app.get('/getCurrentWeather', (req, res) => {
+    let command = 'curl -X GET "https://api.weather.com/v3/wx/observations/current?geocode=47.609862%2C-122.328964&units=s&language=en-US&format=json&apiKey=da328055e2e940d8b28055e2e9e0d851" -H "accept: application/json; charset=UTF-8"';
+    cmd.get(command, function(err, data, stderr) {
+        if(stderr) console.log(stderr);
+        if(err) console.log(err);
+
+        // console.log(data);
+        console.log("Did this")
+        // fs.writeFileSync("Currentweatherdata.json", data);
+        res.json(data);
+    });
+});
+
+app.post('/python/sms', (req, res) => {
+    cmd.get(`python3 ./public/python/sms.py`, function (err, data, stderr) {
+        if (stderr) console.log(stderr);
+        if (err) console.log(err);
+        console.log(data);
+        res.send('Sending Complete');
+    });
+});
+
+app.post('/python/email', (req, res) => {
+    if(emailList.length > 1) emailList.pop();
+    emailList.push(req.body.email);
+
+    let emailArgs = emailList.join(', ');
+    let messageArgs = messageList.length==0 ? '' : messageList[0];
+
+    console.log("EMAIL TRIGGERED");
+
+    if((messageList.length == 0) || (messageArgs == lastMessage)) {
+        messageArgs = safeLocationMessage; 
+    
+        //Send previous audio file | Python script
+        mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+    }
+    else {
+        messageArgs = messageList[0];
+        lastMessage = messageArgs;
+        // generateSpeech(messageArgs, function(){
+        //     // Send new audio file | python script
+        //     mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+        // });
+        //TESTING ONLY:
+        mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+    }
+});
+
+
 app.get('/getApiKey', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({key : 'AIzaSyBzAaIGJ44drCpI0VYw0L4HOMc6UZIQXkY'}));
@@ -40,18 +181,22 @@ app.get('/getApiKey', function(req, res) {
 
 app.get('/chat',(req,res)=>{
   res.render('chat.html');
-  
 });
 
-// app.post('/create_inventory', function(req, res){
-//   let body = req.body;
-//   console.log(body);
-//   res.send('INVENTORY CREATED');
-// });
+app.get('/get_userid', function(req, res) {
+  res.send( 'Your Slack User ID is: ' + req.query.user_id );
+});
+
+app.get('/get_global_inventory', function(req, res) {
+  firebase.getGlobalInventory(function(data) {
+    data = beautifyData(data);
+    let result = 'Global Inventory:\n' + data;
+    slack.sendMessage( result );
+  });
+});
 
 app.get('/send_inventory', function(req, res){
   var request = req.query;
-  console.log(request);
   var user_id = request.user_id;
   
   firebase.getInventory(user_id, function(data){
@@ -78,17 +223,13 @@ app.post('/fetch_inventory', function(req, res){
   var request = req.body;
   var user_id = request.user_id;
   
-  // console.log('>'+user_id);
-
   firebase.getInventory(user_id, function(data){
-    // console.log(data);
     res.json( data );
   });
 });
 
 app.post('/updateInventory', function(req, res){
   var request = req.body;
-  console.log(request);
   firebase.overrideInventory(request, function() {
     res.send('Inventory Updated Successfully!');
   });
@@ -143,6 +284,11 @@ function beautifyData(data) {
   data = data.replace(/:/g, ": ");
   return data;
 }
+
+// async function generateSpeech(message, callback) {
+//     await tts.Synthesize(message);
+//     callback();
+// }
 
 // HOW TO EXECUTE TERMINAL COMMANDS
 // cmd.run('command', function(data) {

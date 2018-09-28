@@ -9,7 +9,7 @@ let vm = new Vue({
         item: '',
     },
     methods: {
-        login(type = false) {
+        login() {
             window.location.href = "https://join.slack.com/t/emergencychatroom/shared_invite/enQtNDQxNjY2Nzk0NDUzLWNkOTVjYzAzNDNjY2E1YTgyZDM1NGQyYjZkZGI5OTYxYzZmYzkyMmQ1NmU1Njc3MWZlNzMxNzcyYWZlYTUzM2E";
         },
         parseInput() {

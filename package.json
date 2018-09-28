@@ -26,7 +26,10 @@
     "nodemailer": "^4.6.8",
     "path": "^0.12.7",
     "request": "^2.88.0",
-    "unirest": "^0.5.1"
+    "unirest": "^0.5.1",
+    "pytalk": "^1.0.5",
+    "python-shell": "^1.0.4",
+    "watson-developer-cloud": "^3.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
