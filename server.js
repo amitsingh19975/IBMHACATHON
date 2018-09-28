@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
 app.engine('html', ejs.renderFile);
-<<<<<<< HEAD
 
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, 'public')))
@@ -28,8 +27,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 app.get('/services', (req, res) => {
     res.render('services');
 });
-=======
->>>>>>> parent of b6e75be... Loaded Test
+
 
 app.get('/', function(req, res) {
   res.render('index.html');
