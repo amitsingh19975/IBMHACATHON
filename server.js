@@ -8,7 +8,8 @@ const pytalk = require('pytalk');
 const TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1');
 const fs = require('fs');
 const mailer = require('./mailer.js');
-var tts = require('./TTSService.js');
+const firebase = require('./firebase.js');
+// var tts = require('./TTSService.js');
 
 var textToSpeech = new TextToSpeechV1({
   username: '35ecbd89-f53e-4a22-8148-1c17da181375',
@@ -30,9 +31,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 
-app.use('/public', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'static')))
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+app.engine('html', ejs.renderFile);
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -67,6 +71,10 @@ app.post('/python', (req, res) => {
             }
         );
         }    
+});
+
+app.get('/chat', (req, res) => {
+  res.render('chat');
 });
 
 app.get('/message', (req, res) => {
@@ -110,8 +118,10 @@ app.get('/getWeatherForecast', (req, res) => {
         if(err) console.log(err);
 
         console.log("Did that");
+        // console.dir(data);
         // fs.writeFileSync("Weatherdata.json", data);
-        res.json(data);
+          res.json(JSON.parse(data));
+
     });
 });
 
@@ -124,7 +134,7 @@ app.get('/getCurrentWeather', (req, res) => {
         // console.log(data);
         console.log("Did this")
         // fs.writeFileSync("Currentweatherdata.json", data);
-        res.json(data);
+        res.json(JSON.parse(data));
     });
 });
 
@@ -155,11 +165,76 @@ app.post('/python/email', (req, res) => {
     else {
         messageArgs = messageList[0];
         lastMessage = messageArgs;
-        generateSpeech(messageArgs, function(){
-            // Send new audio file | python script
-            mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
-        });
+        // generateSpeech(messageArgs, function(){
+        //     // Send new audio file | python script
+        //     mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
+        // });
+        // TESTING ONLY:
+        mailer.send(emailArgs, 'URGENT SITUATION', messageArgs);
     }
+});
+
+
+app.get('/send_inventory', function(req, res){
+  var request = req.query;
+  console.log(request);
+  var user_id = request.user_id;
+  
+  firebase.getInventory(user_id, function(data){
+    data = beautifyData(data);
+    if ( data == 'null' ) data = '`INVENTORY is empty.`';
+    res.send( '' );
+   
+    var msg = `INVENTORY: ${request.user_name}\n` + data ;
+    slack.sendMessage( msg );
+  });
+});
+
+app.get('/view_inventory', function(req, res){
+  var request = req.query;
+  var user_id = request.user_id;
+
+  firebase.getInventory(user_id, function(data){
+    data = beautifyData(data);
+    if ( data == 'null' ) data = '`INVENTORY is empty.`';
+    res.send( data );
+  });
+});
+app.post('/fetch_inventory', function(req, res){
+  var request = req.body;
+  var user_id = request.user_id;
+  
+  // console.log('>'+user_id);
+
+  firebase.getInventory(user_id, function(data){
+    // console.log(data);
+    res.json( data );
+  });
+});
+
+app.post('/updateInventory', function(req, res){
+  var request = req.body;
+  console.log(request);
+  firebase.overrideInventory(request, function() {
+    res.send('Inventory Updated Successfully!');
+  });
+});
+
+app.post('/slackUpdateInventory', function(req, res) {
+  var request = req.body;
+  parseArguements(request.text).then(arg=>{
+    var updateRequest = {};
+    updateRequest['user_id'] = request.user_id;
+    updateRequest['items'] = arg;
+  
+    firebase.updateInventory(updateRequest, function() {
+      firebase.getInventory(updateRequest['user_id'], function(data){
+        data = beautifyData(data);
+        res.send(data);
+      });
+    });
+  });
+  
 });
 
 app.get('/getApiKey', (req, res) => {
@@ -177,7 +252,30 @@ app.listen(port, () => {
     console.log(`http://localhost:${8081}`);
 });
 
-async function generateSpeech(message, callback) {
-    await tts.Synthesize(message);
-    callback();
-}
+// function test(res, callback) {
+//   let ob = [];
+//   for (let i = 0; i < 5; i+=2) {
+//       let obj = {};
+//                               for (const key in res) {
+//                                   if (res.hasOwnProperty(key)) {
+//                                       if(key === 'daypart'){
+//                                           const temp = res[key][0];
+//                                           for (const k in temp) {
+//                                               if (temp.hasOwnProperty(k)) {
+//                                                   obj[k] = [temp[k][i],temp[k][i + 1]];
+//                                               }
+//                                           }
+//                                           continue;
+//                                       }
+//                                       obj[key] = res[key][i];
+//                                   }
+//                               }
+//                               ob.push(obj);
+//                           }
+//   callback(ob);
+// }
+
+// async function generateSpeech(message, callback) {
+//     await tts.Synthesize(message);
+//     callback();
+// }

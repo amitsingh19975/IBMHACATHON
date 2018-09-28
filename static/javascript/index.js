@@ -68,6 +68,7 @@ vm = new Vue({
             fetch('/getWeatherForecast')
                 .then(res => res.json())
                 .then(res => {
+                    console.log(res);
                     for (let i = 0; i < 5; i+=2) {
                         let obj = {};
                         for (const key in res) {
@@ -86,6 +87,7 @@ vm = new Vue({
                         }
                         ob.push(obj);
                     }
+
                     this.weatherForecast = ob;
                     // console.log(this.weatherForecast)
                 })
