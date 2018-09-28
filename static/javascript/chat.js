@@ -35,7 +35,7 @@ let vm = new Vue({
             this.items[index].show = false;
             setTimeout(() => {
                 this.items.splice(index, 1);
-            }, 1001);
+            }, 600);
         },
         uploadInventory() {
             if (this.user_id === '' || !(this.items.length > 0))
@@ -68,7 +68,7 @@ let vm = new Vue({
                     console.log(e);
                 });
         },
-        validate() {
+        async validate() {
             if (this.user_id !== '') {
                 this.formHide = true;
             }
@@ -84,7 +84,6 @@ let vm = new Vue({
             fetch('/fetch_inventory', param)
                 .then(res => res.json())
                 .then(res => {
-                    // console.log(res);
                     for(var key in res) {
                         let obj = {};
                         obj.name = key;
@@ -92,7 +91,6 @@ let vm = new Vue({
                         obj.show = true;
                         this.items.push(obj);
                     }
-                    
                 })
                 .catch((e) => {
                     console.log(e);

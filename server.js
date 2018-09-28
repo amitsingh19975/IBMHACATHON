@@ -40,6 +40,7 @@ app.use(bodyParser.urlencoded({
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.set('views', __dirname + '/views');
 app.engine('html', ejs.renderFile);
+
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
