@@ -3,23 +3,17 @@ var nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'eyeframe.ai@gmail.com',
-    pass: 'bahuamitayu246'
+    user: 'svr8svr8@gmail.com',
+    pass: 'codinglesson14@learn.com'
   }
 });
 
 module.exports = {
-  send: function(to, sub, text) {
+  mail: function() {
     var mailOptions = {
-      to: `${to}`,
-      subject: `${sub}`,
-      text: `${text}`,
-      attachments: [
-        {
-          filename: 'message.wav',
-          path: './message.wav'
-        }
-      ]
+      to: 'shikhar.vaish90@gmail.com',
+      subject: 'Sending Email using Node.js',
+      text: 'That was easy',
       // html: '<p> Your html here </p>'
       // attachments: [
       //   {
