@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
 
 app.get('/services', (req, res) => {
     res.render('services');
+
+app.get('/getApiKey', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({key : 'AIzaSyBzAaIGJ44drCpI0VYw0L4HOMc6UZIQXkY'}));
 });
 
 app.post('/python', (req, res) => {

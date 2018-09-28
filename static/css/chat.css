@@ -10,6 +10,11 @@
     font-family: sans-serif;
 }
 
+::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent; 
+}
+
 .container {
     font-size: 2rem;
     height: 87vh;
@@ -366,11 +371,11 @@ input:focus {
 
 @keyframes removeItem {
     100% {
-        transform: translateX(-60rem) scaleX(0.2);
-        -webkit-transform: translateX(-60rem) scaleX(0.2);
-        -moz-transform: translateX(-60rem) scaleX(0.2);
-        -ms-transform: translateX(-60rem) scaleX(0.2);
-        -o-transform: translateX(-60rem) scaleX(0.2);
+        transform: translateX(-60rem) scale(0.4);
+        -webkit-transform: translateX(-60rem) scale(0.4);
+        -moz-transform: translateX(-60rem) scale(0.4);
+        -ms-transform: translateX(-60rem) scale(0.4);
+        -o-transform: translateX(-60rem) scale(0.4);
         opacity: 0;
-    }
+}
 }
